@@ -1,13 +1,5 @@
 import { createContext } from "@/helpers";
-
-interface AuthState {
-  isAuthenticated: boolean;
-}
-
-interface AuthContextProps extends AuthState {
-  login: () => void;
-  logout: () => void;
-}
+import { AuthContextProps, AuthState } from ".";
 
 const initialState: AuthState = {
   isAuthenticated: false,

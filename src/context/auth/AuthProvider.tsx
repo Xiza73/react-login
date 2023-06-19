@@ -1,25 +1,21 @@
 import { getStorage, removeStorage, setStorage, sleep } from "@/helpers";
-import { useCallback, useMemo, useState } from "react";
-import { AuthContext } from ".";
+import { useCallback, useMemo, useReducer } from "react";
+import { AuthActions, AuthContext, AuthProviderProps, authReducer } from ".";
 import { useLoader } from "..";
 
 const AUTH_KEY = "is-authenticated";
 
-export interface AuthProviderProps {
-  children: React.ReactNode;
-}
-
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(
-    getStorage<boolean>(AUTH_KEY) || false
-  );
+  const [state, dispatch] = useReducer(authReducer, {
+    isAuthenticated: getStorage<boolean>(AUTH_KEY) || false,
+  });
   const { startLoading, stopLoading } = useLoader();
 
   const login = useCallback(async () => {
     startLoading();
     await sleep(2000);
     setStorage(AUTH_KEY, true);
-    setIsAuthenticated(true);
+    dispatch({ type: AuthActions.LOGIN });
     stopLoading();
   }, []);
 
@@ -27,13 +23,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     startLoading();
     await sleep(2000);
     removeStorage(AUTH_KEY);
-    setIsAuthenticated(false);
+    dispatch({ type: AuthActions.LOGOUT });
     stopLoading();
   }, []);
 
   const value = useMemo(
-    () => ({ isAuthenticated, login, logout }),
-    [isAuthenticated, login, logout]
+    () => ({ ...state, login, logout }),
+    [state, login, logout]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

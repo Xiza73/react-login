@@ -1,13 +1,5 @@
 import { createContext } from "@/helpers";
-
-interface LoaderState {
-  isLoading: boolean;
-}
-
-interface LoaderContextProps extends LoaderState {
-  startLoading: () => void;
-  stopLoading: () => void;
-}
+import { LoaderContextProps, LoaderState } from ".";
 
 const initialState: LoaderState = {
   isLoading: false,
