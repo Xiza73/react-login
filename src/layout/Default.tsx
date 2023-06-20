@@ -16,10 +16,10 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
-import { NavLink } from "@/components/Layout/NavLink";
+import { NavLink } from "@/components";
 import { AuthRoutes, PublicRoutes, UserRoutes } from "@/router";
-import { useAuth } from "@/context";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth, useSelector } from "@/redux";
 
 const LinkLabels = [PublicRoutes.HOME, AuthRoutes.LOGIN];
 const PrivateLinkLabels = [UserRoutes.PROFILE];
@@ -29,7 +29,8 @@ export interface DefaultProps {
 }
 
 export const Default: React.FC<DefaultProps> = ({ children }) => {
-  const { isAuthenticated, logout } = useAuth();
+  const { logout } = useAuth();
+  const { isAuthenticated } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -49,7 +50,9 @@ export const Default: React.FC<DefaultProps> = ({ children }) => {
             onClick={isOpen ? onClose : onOpen}
           />
           <HStack spacing={8} alignItems={"center"}>
-            <Link to={PublicRoutes.HOME.path}>Logo</Link>
+            <Link to={PublicRoutes.HOME.path} replace>
+              Logo
+            </Link>
             <HStack
               as={"nav"}
               spacing={4}

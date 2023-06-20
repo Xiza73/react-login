@@ -1,14 +1,14 @@
 import { RouterProvider } from "react-router-dom";
-import { AuthProvider } from "./context";
 import { router } from "./router";
 import { Loader } from "./components/Loader";
+import { ReduxProvider } from "./redux";
 
 function App() {
   return (
-    <AuthProvider>
+    <ReduxProvider>
       <Loader />
       <RouterProvider router={router} />
-    </AuthProvider>
+    </ReduxProvider>
   );
 }
 
