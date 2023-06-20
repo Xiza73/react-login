@@ -1,4 +1,3 @@
-import { useAuth } from "@/context";
 import { useState } from "react";
 import {
   Flex,
@@ -9,8 +8,8 @@ import {
   Input,
   Button,
 } from "@chakra-ui/react";
-
-const MAGIC_TOKEN = "abc123";
+import { useAuth } from "@/redux";
+import { MAGIC_TOKEN } from "@/constants";
 
 export const Login: React.FC = () => {
   const { login } = useAuth();
